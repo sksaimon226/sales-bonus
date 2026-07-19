@@ -7,7 +7,7 @@
 function calculateSimpleRevenue(purchase, _product) {
   // @TODO: Расчет выручки от операции
 
-  const { discount, sale_price, quantity } = purchase;
+  //const { discount, sale_price, quantity } = purchase;
   const decimalDiscount = 1 - purchase.discount / 100;
   const FullCostProd = purchase.sale_price * purchase.quantity;
   return FullCostProd * decimalDiscount;
@@ -75,7 +75,7 @@ function analyzeSalesData(data, options) {
 
   // @TODO: Индексация продавцов и товаров для быстрого доступа
   const sellerIndex = Object.fromEntries(
-    data.sellers.map((seller) => [seller.id, seller]),
+    sellerStats.map((seller) => [seller.id, seller]),
   );
   const productIndex = Object.fromEntries(
     data.products.map((product) => [product.sku, product]),
@@ -96,6 +96,7 @@ function analyzeSalesData(data, options) {
       // Посчитать прибыль: выручка минус себестоимость
       // Увеличить общую накопленную прибыль (profit) у продавца
       seller.profit += revenue - cost;
+      seller.revenue += Math.round(revenue * 100) / 100;
       // Учёт количества проданных товаров
       if (!seller.products_sold[item.sku]) {
         seller.products_sold[item.sku] = 0;
